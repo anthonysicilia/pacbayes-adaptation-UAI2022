@@ -1,7 +1,5 @@
 import torch
 
-from tqdm import tqdm
-
 from ..models.stochastic import sample as sample_model
 from .base import Estimator as BaseEstimator
 from .expectation import Estimator as Mean
@@ -63,7 +61,7 @@ class Estimator(BaseEstimator):
         device='cpu', verbose=False, sample=False):
         super().__init__()
         self.model = model.to(device)
-        self.hspace = mbuilder
+        self.mbuilder = mbuilder
         with torch.no_grad():
             if sample: sample_model(self.model)
         self.a = a
@@ -78,11 +76,11 @@ class Estimator(BaseEstimator):
     
     def _asymmetric_compute(self, a, b):
         dataset = DisagreementSet(a, b, self.model, 
-            self.hspace.test_dataloader, device=self.device)
-        model = ModelEstimator(self.hspace, dataset,
+            self.mbuilder.test_dataloader, device=self.device)
+        model = ModelEstimator(self.mbuilder, dataset,
             device=self.device, verbose=self.verbose, 
             catch_weights=True).compute()
-        iterator = to_device(self.hspace.test_dataloader(dataset),
+        iterator = to_device(self.mbuilder.test_dataloader(dataset),
             self.device)
         prob_dis_a = Mean()
         prob_dis_b = Mean()

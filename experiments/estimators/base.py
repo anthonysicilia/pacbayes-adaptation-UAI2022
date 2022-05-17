@@ -4,8 +4,9 @@ class Estimator:
     be derived.
     """
 
-    def __init__(self):
+    def __init__(self, recompute=False):
         self.estimate = None
+        self._recompute = recompute # for estimators with .update()
     
     def _compute(self):
         raise NotImplementedError('Estimator is abstract.'
@@ -18,7 +19,10 @@ class Estimator:
         """
         if self.estimate is not None:
             # if self.estimate: hangs up on zero
-            return self.estimate
+            estimate = self.estimate
+            if self._recompute:
+                self.estimate = None
+            return estimate
         else:
             self.estimate = self._compute()
             return self.compute()

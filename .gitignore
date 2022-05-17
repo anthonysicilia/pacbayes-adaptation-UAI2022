@@ -1,5 +1,14 @@
 # Added by me
 .DS_Store
+out
+scripts
+MNIST
+SVHN
+USPS
+scratch-imgs
+scratch.py
+*.png
+*.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

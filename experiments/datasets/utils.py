@@ -6,6 +6,8 @@ from random import Random
 
 from ..utils import set_random_seed
 
+MAX_SIZE = 5_000
+
 class Multisource(torch.utils.data.Dataset):
 
     def __init__(self, dsets):
@@ -48,12 +50,14 @@ class Dataset(torch.utils.data.Dataset):
         elem = copy.deepcopy(self.dataset[index])
         return (*elem, index)
 
-def make_frozenset(dset, train=True, seed=0, num_classes=None):
+def make_frozenset(dset, train=True, seed=0, num_classes=None,
+    max_size=MAX_SIZE):
     scoped_random = Random(seed)
     x = [scoped_random.random() for _ in range(len(dset))]
     comp = operator.le if train else operator.gt
     train = lambda xi: comp(xi, 0.5)
     indices = [i for i, xi in enumerate(x) if train(xi)]
+    indices = indices[:max_size]
     return Dataset(dset, seed, keep=indices, 
         num_classes=num_classes)
 

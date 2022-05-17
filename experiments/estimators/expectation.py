@@ -7,7 +7,7 @@ class Estimator(BaseEstimator):
     """
 
     def __init__(self):
-        super().__init__()
+        super().__init__(recompute=True)
         self.values = []
         self.weights = []
     

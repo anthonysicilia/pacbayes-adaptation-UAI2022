@@ -3,6 +3,7 @@ from random import Random
 import torch
 
 from ..utils import lazy_kwarg_init
+from .utils import MAX_SIZE
 
 # TOKEN quantiles for pdtb, biordb, ted
 # 99.9% | 221.9719999999943
@@ -72,21 +73,21 @@ DISCOURSE_SENSE = {
 
 class Dataset(torch.utils.data.Dataset):
 
-        def __init__(self, vecs, labels):
-            self.vecs = vecs
-            self.labels = labels
-            self.num_classes = max(set(labels)) + 1
-            # not really needed anymore, always 768 or tokens
-            # try:
-            #     self.input_sz = vecs[0].shape[0]
-            # except AttributeError:
-            #     self.input_sz = None
-        
-        def __len__(self):
-            return len(self.vecs)
-        
-        def __getitem__(self, index):
-            return self.vecs[index], self.labels[index], index
+    def __init__(self, vecs, labels):
+        self.vecs = vecs
+        self.labels = labels
+        self.num_classes = max(set(labels)) + 1
+        # not really needed anymore, always 768 or tokens
+        # try:
+        #     self.input_sz = vecs[0].shape[0]
+        # except AttributeError:
+        #     self.input_sz = None
+    
+    def __len__(self):
+        return len(self.vecs)
+    
+    def __getitem__(self, index):
+        return self.vecs[index], self.labels[index], index
 
 def _bert_vectors(parent, domain, train, seed, bert):
     loc = open(f'{parent}_relations_{bert}.pkl', 'rb')
@@ -98,7 +99,8 @@ def _bert_vectors(parent, domain, train, seed, bert):
 
     if train is not None:
         data = data[:n] if train else data[n:]
-    
+    data = data[:MAX_SIZE]
+
     if bert == 'tokens':
         embeddings = [{
             'input_ids' : x['tokens'][0].numpy().flatten(),
@@ -132,8 +134,9 @@ def ted(train=True, seed=0, bert='sentence'):
 
 PDTB_DATASETS = lambda b: [
     (f'{b[0]}_pdtb', lazy_kwarg_init(pdtb, bert=b)),
-    (f'{b[0]}_biodrb', lazy_kwarg_init(biodrb, bert=b)),
-    (f'{b[0]}_ted', lazy_kwarg_init(ted, bert=b))
+    (f'{b[0]}_biodrb', lazy_kwarg_init(biodrb, bert=b))
+    # removing ted because it is too small
+    # (f'{b[0]}_ted', lazy_kwarg_init(ted, bert=b))
 ]
 
 def reddit(train=True, seed=0, bert='sentence'):

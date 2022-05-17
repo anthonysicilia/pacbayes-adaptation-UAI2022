@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 
-from math import log, expm1
+from math import log, expm1, exp
 
 from ..bounds.functional import dziugaite_variational_bound
 from .templates import ModelBuilder
@@ -343,10 +343,11 @@ class Stochastic(ModelBuilder):
     }
 
     def __init__(self, base, head, trainer, prior=None, m=1000, delta=0.05,
-        kl_damp=1.0, sigma_prior=0.01, device='cpu'):
+        kl_damp=1.0, sigma_prior=0.01, device='cpu', gamma=10):
         super().__init__(base, head, trainer)
         self.m = m
         self.delta = delta
+        self.gamma = gamma
         self.prior = prior
         self.kl_damp = kl_damp
         self.device = device
@@ -381,14 +382,19 @@ class Stochastic(ModelBuilder):
         self._make_stochastic(h, self.rho_prior)
         return h
     
-    def loss_fn(self, yhat, y, w=None, h=None):
+    def loss_fn(self, yhat, y, w=None, h=None, p=None):
         loss = super().loss_fn(yhat, y, w=w)
         if h is not None:
             # infer if we should regularize based on h
             kl = compute_kl(h, self.device)
             eps = dziugaite_variational_bound(loss, kl, 
                 self.m, self.delta)
-            return loss + self.kl_damp * eps
+            if p is not None:
+                # λ = 2 / (1 + exp(−κ · p)) − 1
+                beta = 2 / (1 + exp(-self.gamma * p)) - 1
+            else:
+                beta = 1
+            return loss + self.kl_damp * beta * eps
         else:
             return loss
 

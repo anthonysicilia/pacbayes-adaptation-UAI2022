@@ -1,4 +1,3 @@
-from pydantic import NoneIsAllowedError
 import torch
 
 from .templates import Trainer
@@ -14,8 +13,8 @@ class PlaceholderScheduler:
 
 class StepDecaySGD(Trainer):
 
-    def __init__(self, epochs=120, base_lr=1e-3, head_lr=1e-2,
-        alt_lr=1e-3, batch_size=128, momentum=0.9, decay=0.1, 
+    def __init__(self, epochs=150, base_lr=1e-3, head_lr=1e-2,
+        alt_lr=1e-3, batch_size=128, momentum=0.9, decay=0.5, 
         step=0.75):
         super().__init__(epochs, base_lr, head_lr, batch_size)
         self.boptim = lazy_kwarg_init(torch.optim.SGD,
