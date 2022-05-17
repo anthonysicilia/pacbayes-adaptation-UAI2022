@@ -6,7 +6,7 @@ This research was conducted in conjunction with [The Change that Matters in Disc
 
 Some of the code is shared across repositories as detailed below.
 
-## Code
+## Shared Code
 Code for running DANN experiments and summarizing DANN results is available in this repository. Code for running and summarizing additional experiments is available in the shared code repository [here](https://github.com/anthonysicilia/multiclass-domain-divergence). Further, a python package designed to compute key terms in the bounds we propose is available [here](https://github.com/anthonysicilia/classifier-divergence).
 
 Please consider citing one or both papers if you use this code.
@@ -17,5 +17,7 @@ arXiv (UAI 2022): Forthcoming
 arXiv (ACL 2022): https://arxiv.org/abs/2203.11317
 
 shared code: https://github.com/anthonysicilia/multiclass-domain-divergence
+
+ACL code: https://github.com/anthonysicilia/change-that-matters-ACL2022
 
 package: https://github.com/anthonysicilia/classifier-divergence
