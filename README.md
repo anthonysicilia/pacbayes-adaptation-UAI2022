@@ -11,7 +11,7 @@ Code for running DANN experiments and summarizing DANN results is available in t
 
 Please consider citing one or both papers if you use this code.
 
-## Other Relevant Links
+## Relevant Links
 arXiv (UAI 2022): Forthcoming
 
 arXiv (ACL 2022): https://arxiv.org/abs/2203.11317
