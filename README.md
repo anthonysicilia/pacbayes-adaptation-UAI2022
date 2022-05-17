@@ -21,3 +21,6 @@ shared code: https://github.com/anthonysicilia/multiclass-domain-divergence
 ACL code: https://github.com/anthonysicilia/change-that-matters-ACL2022
 
 package: https://github.com/anthonysicilia/classifier-divergence
+
+## Running the code
+For ease of use, we have created a python script ```make_scripts.py``` to generate example bash scripts. In many cases, these may be exactly identical to the scripts used to generate results in the paper. The bash scripts interfrace with the ```experiments``` module to create the raw results for DANN experiments. Following this, code for summarizing can be run using ```results.py```. Feel free to contact us with any questions (e.g., by raising an issue here or using the contact information available in the accompanying papers).
