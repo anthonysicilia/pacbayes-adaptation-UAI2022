@@ -24,3 +24,14 @@ package: https://github.com/anthonysicilia/classifier-divergence
 
 ## Running the code
 For ease of use, we have created a python script ```make_scripts.py``` to generate example bash scripts. In many cases, these may be exactly identical to the scripts used to generate results in the paper. The bash scripts interfrace with the ```experiments``` module to create the raw results for DANN experiments. Following this, code for summarizing raw results can be run using ```results.py```. Feel free to contact us with any questions (e.g., by raising an issue here or using the contact information available in the accompanying papers).
+
+### Notable Versions
+Code was run using the following versions:
+ - python==3.7.4
+ - matplotlib==3.5.0
+ - numpy==1.21.2
+ - pandas==1.3.5
+ - scipy==1.7.3
+ - seaborn==0.12.1
+ - torch==1.10.2 (build py3.7_cuda10.2_cudnn7.6.5_0)
+ - tqdm==4.45.0
